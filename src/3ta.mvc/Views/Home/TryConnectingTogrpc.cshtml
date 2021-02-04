@@ -1,0 +1,25 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model HomeGrpcViewModel
+
+<h1>Connecting to gRPC server</h1>
+
+@using (Html.BeginForm("TryConnectingToGrpc", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+<div class="form-group">
+    @Html.LabelFor(m => m.GrpcUrl)
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.GrpcUrl)
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <button type="submit" class="btn btn-default">Test</button>
+    </div>
+</div>
+}
+
+<div class="row">Results: [@Model.Greeting]</div>

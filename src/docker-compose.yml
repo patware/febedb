@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  3ta.api:
+    image: 3taapi
+    build:
+      context: .
+      dockerfile: 3ta.api\Dockerfile
+
+  3ta.business:
+    image: 3tabusiness
+    build:
+      context: .
+      dockerfile: 3ta.business\Dockerfile
+
+
+  3ta.mvc:
+    image: 3tamvc
+    build:
+      context: .
+      dockerfile: 3ta.mvc\Dockerfile
+    depends_on:
+      - 3ta.api
+      - 3ta.business
