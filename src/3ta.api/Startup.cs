@@ -31,7 +31,7 @@ namespace _3ta.api
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "_3ta.api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "3ta.api", Version = "v1" });
             });
         }
 
@@ -42,7 +42,7 @@ namespace _3ta.api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "_3ta.api v1"));            
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "3ta.api v1"));            
             }
             app.UseHttpsRedirection();
 
