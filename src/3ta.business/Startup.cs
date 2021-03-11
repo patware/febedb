@@ -26,9 +26,7 @@ namespace _3ta.business
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            
-            app.UseHttpsRedirection();
+                        
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
