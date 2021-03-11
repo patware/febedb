@@ -3,19 +3,12 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:44030",
-      "sslPort": 44033
+      "applicationUrl": "http://localhost:51630/",
+      "sslPort": 44364
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "_3ta.mvc": {
       "commandName": "Project",
       "launchBrowser": true,
@@ -34,8 +27,12 @@
       },
       "publishAllPorts": true,
       "httpPort": 5130,
-      "sslPort": 5133,
-      "useSSL": true
+      "useSSL": true,
+      "sslPort": 5133
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true
     }
   }
 }

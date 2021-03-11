@@ -1,0 +1,37 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model HomeWebApiViewModel
+
+@{
+}
+
+<h1>Testing WebApi call</h1>
+
+@using (Html.BeginForm("TryConnectingToWebApi", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.WebApiUrl)
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.WebApiUrl)
+        </div>        
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Test</button>
+        </div>
+    </div>
+}
+
+<h2>Results</h2>
+
+@foreach (var f in Model.Forecast)
+{
+    <div class="card">
+        <div class="card-header">@f.TemperatureC</div>
+        <div class="card-text">@f.Summary</div>
+    </div>
+}
+
