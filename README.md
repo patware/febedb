@@ -1,44 +1,80 @@
-# From Visual Studio, Kestrel, Docker, Docker-Compose and finally K8s
+# Classic C# 3tier app to orchestrated container
 
-The idea is to recreate (manually) a solution (.sln) similar to the one from the eShopOnContainers experience.
+This repo is the chronicles of the transitioning of a classic [3tier app](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#traditional-n-layer-architecture-applications) app to one running in an orchestrated container, paving the way towards microservices like [eShopOnContainers](https://github.com/dotnet-architecture/eShopOnContainers) experience.
 
-I'm trying to answer the question: what does it take to go from a classic "vanilla" Visual Studio solution with out-of-the-box projects to a git-download-press-F5 and obtain a fully baked, local and working multi-tier system.
+Febedb stands for Front End, Back End, DataBase.
 
-Not as easy as I thought it should be.
+In order to make this as relevant as possible to everyone, the [technologies](#technologies) and patterns used are classic (Asp.Net MVC, Web services) and Sql Server.  
 
-Note: this is not a reference on "micro services " architecture but more on how to setup for it in a "Windows Containers" context, with Microsoft .Net Core 5.0 and the least dependencies on external tools, templates, accelerators.
+There won't be cooler/better frameworks or patterns used to build modern [frontend](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-client-side-web-technologies) like [Angular](https://angular.io/), [React]()]https://reactjs.org/) or [Vue.js]()]https://vuejs.org/), [backend]() using [Web API](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-application-layer-implementation-web-api) or [gRPC](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/grpc), nor any NoSql like [MongoDb](https://www.mongodb.com/).
+
+On the other hand, at the end of the transition, your app will in position/state to make it easy to adopt them.
+
+## Technologies
+
+Starting technologies and software:
+
+- Visual Studio 2019
+- .Net Core 5
+- Language: C#
+- Frontend: Web App (MVC)
+- Backend: Web service
+- Database: Sql Server
+
+Target technologies and software:
+
+- Visual Studio 2019
+- .Net Core 5
+- Docker
+- Kubernetes
+- Language: C#
+- Frontend: Web App (MVC)
+- Backend: Web service
+- Database: Sql Server
+
+> [!Note]
+> .Net core 5 is probably more "modern" than your situation, simply [convert](https://github.com/dotnet/try-convert) your .net Framework app.
+
+## Methodology
+
+Each step will have its own directory, with a "before" and an "after".
+
+For each step, the app will be executable from Visual Studio or from the command line.
+
+Steps:
+
+1. story begins with a 3 tier app.
+1. app will be "dockerized".
+1. container orchestration with docker-compose
+1. Kubernetes
 
 ## Requirements
 
-* Windows 10
-* Docker for Windows - Windows Containers
-* WSL2
-* Visual Studio 2019
-* .Net Core 5.0
+- Windows 10
+- Docker for Windows with Kubernetes - Windows Containers
+- WSL2
+- Visual Studio 2019
+- .Net Core 5.0
 
-Naming convention for ports:
+## Naming convention for ports
 
-1. First digit "5" is a grouping for convenience.  
-1. Second digit for the "way" the app is hosted/executed.
-1. Third digit is for the service... no big plans, but lower number need to be started before higher numbers..  may not stay like that...
-1. Fourth digit 0 = http, 3 = https (like in 80 and 443 ;))
+It's easier to troubleshoot errors when ports follow a certain pattern.  The web ports will be using the 5xxx range:
 
-Digit 1 and 2:
+1. First digit: 5 - for convenience.
+1. Second digit: step-ish: 0: IIS Express, 1: kestrel, 2: docker, 3: docker-compose, 4: Kubernetes
+1. Third digit: 1 = back end, 2 = front end (follows the loading order)
+1. Fourth digit 0 = http, 3 = https (like in 0 for 80 and 3 for 443 ;))
 
-* 80xx: IIS express
-* 50xx: kestrel/dotnet run.
-* 51xx: docker (individual containers)
-* 52xx: docker-compose
-* 53xx: Kubernetes
+## 3 tier applications
 
-Digit 3:
+For a long time, the [3tier architecture](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#traditional-n-layer-architecture-applications) was a well-established software application architecture that organizes applications into 3 logical and physical computing tiers:
 
-xx1x: API (Web Api)
-xx2x: Business Tier
-xx3x: MVC front end
-xx4x: SPA front end
+- the presentation tier, or user interface
+- the application tier, where information is processed
+- the data tier, where the data associated with the application is stored
 
-Digit 4:
+Today, a more modern way of building these is via [microcontainers](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/).
 
-xxx0: http
-xxx3: https
+## This is not
+
+This repo is not a course or lecture on micro containers, containers, serverless, or any cloud native technology offerings.
