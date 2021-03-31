@@ -10,6 +10,19 @@ There won't be cooler/better frameworks or patterns used to build modern [fronte
 
 On the other hand, at the end of the transition, your app will in position/state to make it easy to adopt them.
 
+## Methodology
+
+Each step will have its own directory, with a "before" and an "after".
+
+For each step, the app will be executable from Visual Studio or from the command line.
+
+Steps:
+
+1. story begins with a 3 tier app. [README](./src/step1.normal/README.md)
+1. app will be "dockerized".
+1. container orchestration with docker-compose
+1. Kubernetes
+
 ## Technologies
 
 Starting technologies and software:
@@ -34,19 +47,6 @@ Target technologies and software:
 
 > [!Note]
 > .Net core 5 is probably more "modern" than your situation, simply [convert](https://github.com/dotnet/try-convert) your .net Framework app.
-
-## Methodology
-
-Each step will have its own directory, with a "before" and an "after".
-
-For each step, the app will be executable from Visual Studio or from the command line.
-
-Steps:
-
-1. story begins with a 3 tier app.
-1. app will be "dockerized".
-1. container orchestration with docker-compose
-1. Kubernetes
 
 ## Requirements
 

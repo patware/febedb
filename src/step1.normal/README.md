@@ -1,4 +1,4 @@
-# Step 1 - IIS Express
+# Step 1 - normal 3tier app in IIS Express/kestrel
 
 Nothing wild.
 
