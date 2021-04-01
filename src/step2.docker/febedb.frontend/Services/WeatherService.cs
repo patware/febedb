@@ -19,17 +19,37 @@ namespace febedb.frontend.Services
 
         public async Task<Data.WeatherForecast> GetWeatherAsync()
         {
-            var client = new HttpClient();
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(_settings.BackendUrl)
+            };
 
-            client.BaseAddress = new Uri(_settings.BackendUrl);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
             Data.WeatherForecast forecast = null;
 
-            HttpResponseMessage response = await client.GetAsync("/api/WeatherForecast");
-            if (response.IsSuccessStatusCode)
+            HttpResponseMessage response = null;
+
+            try
+            {
+                response = await client.GetAsync("/api/WeatherForecast");
+            }
+            catch (Exception ex)
+            {
+                forecast = new Data.WeatherForecast()
+                {
+                    Id = -1,
+                    Date = DateTime.Now,
+                    TemperatureC = 0,
+                    Summary = ex.Message
+                };
+
+                return forecast;
+            }
+            
+            if (response != null && response.IsSuccessStatusCode)
             {
                 var forecasts = await response.Content.ReadFromJsonAsync<IEnumerable<Data.WeatherForecast>>();
 
