@@ -20,7 +20,7 @@ Steps:
 
 1. story begins with a 3 tier app. [README](./src/step1.normal/README.md)
 1. app will be "dockerized". [README](./src/step2.normal/README.md)
-1. container orchestration with docker-compose
+1. container orchestration with docker-compose. [README](./src/step3.dockercompose/README.md)
 1. Kubernetes
 
 ## Technologies
