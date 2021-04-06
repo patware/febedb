@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  febedb.backend:
+    image: ${DOCKER_REGISTRY-}febedbbackend
+    build:
+      context: .
+      dockerfile: febedb.backend/Dockerfile
+
+  febedb.frontend:
+    image: ${DOCKER_REGISTRY-}febedbfrontend
+    build:
+      context: .
+      dockerfile: febedb.frontend/Dockerfile
+
