@@ -24,7 +24,84 @@ If you check docker-compose.yml, you'll notice that the febedb.frontend was adde
 <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
 ```
 
-| project | https | http |
-| ------- | --- | --- |
-| febedb.backend | 5313 | 5310 |
-| febedb.frontend | 5323 | 5320 |
+### Service dependencies
+
+The frontend depends on the backend, and the backend depends on the db.
+
+- Open docker-compose.yml
+- Add the depends_on
+
+```yml
+  febedb.frontend:
+    image: ${DOCKER_REGISTRY-}febedbfrontend
+    depends_on:
+      - febedb.backend
+    build:
+      context: .
+      dockerfile: febedb.frontend/Dockerfile
+```
+
+If you select docker-compose as the Startup Project and hit start, the swagger page will show.  Check the port, it's a dynamically created port number that allows the service to be exposed outside the "service".  Let's run curl inside the frontend container:
+
+```dos
+docker exec -it c1601 /bin/sh
+
+# apt-get update
+# apt-get install curl
+# curl https://febedb.frontend/
+curl: (60) SSL certificate problem: unable to get local issuer certificate
+More details here: https://curl.haxx.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+
+# curl https://febedb.backend/swagger/index.html
+curl: (60) SSL certificate problem: unable to get local issuer certificate
+More details here: https://curl.haxx.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+```
+
+This is "some" progress, the frontend can now reference the backend using the service's name: "febedb.backend".  Now, the certificates.
+
+## OpenSSL
+
+Thanks to the community, a [similar problem](https://github.com/microsoft/DockerTools/issues/249) was reported in gitHub. I followed Nathan Carlson's [CertExample](https://github.com/NCarlsonMSFT/CertExample/).
+
+- Create a (Windows) folder: Certs
+- Create PowerShell script: create-certs.ps1
+- Create docker-compose yml template: docker-compose.vs.debug.yml.template
+- Create a bash shell script: createCerts.sh
+- Create config files: febedb.cnf, febedb.backend.cnf, febedb.frontend.cnf
+
+In the docker-compose.vs.debug.yml has a instruction build a specific stage of the dockerfile.  Add the specified stage to the backend and frontend dockerfiles.
+
+```yml
+FROM base AS testCerts
+ADD Certs/Generated/febedb.ca.cert.crt /usr/local/share/ca-certificates/febedb.ca.cert.crt
+RUN chmod 644 /usr/local/share/ca-certificates/febedb.ca.cert.crt && update-ca-certificates
+```
+
+This will add the generated CA as approver for the each SSL certificate.
+
+The frontend still points to "localhost:5213", this is a two step fix:
+
+1. febedb.frontend\appsettings.json > update the BackendUrl to: ```"BackendUrl": "https://febedb.backend"```
+1. docker-compose.override.yml > set the appropriate port mappings:
+
+- febedb.backend:
+  - "5310:80"
+  - "5313:443"
+- febedb.frontend:
+  - "5320:80"
+  - "5323:443"
+
+>[!NOTE]
+> Notice that the BackendUrl (https://febedb.backend) does not include a port, but in the docker-compose we set a port mapping and when we navigate to the url to test the swagger, we need that port.  That's because internally (from container to container within docker-compose) they speak native (:80 and :443).  The port mapping is for the outside world (your workstation) when trying to access "internals".
+
+Now, if you hit Start, we're almost there ;)  There will be an error, that's because (localdb) being SQL Express won't be accessible.
+
+We can workaround that problem by hard coding a fake weather, and tackle the sql stuff another time.

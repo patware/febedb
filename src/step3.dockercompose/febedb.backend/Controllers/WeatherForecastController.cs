@@ -27,11 +27,22 @@ namespace febedb.backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherForecast>>> GetWeatherForecast()
         {
+            await Task.CompletedTask;
+
+            return new List<WeatherForecast>(new[] { new WeatherForecast() { 
+                Id = 123,
+                Date = DateTime.Now,
+                TemperatureC = 23,
+                Summary = "Fake temperature"
+            } });
+
+            /*
             var l = await _context.WeatherForecast.ToListAsync();
 
             l.ForEach(i => i.Summary = _temperatureAppreciation.Summerize(i.TemperatureC));
 
             return l;
+            */
         }
 
         // GET: api/WeatherForecast/5

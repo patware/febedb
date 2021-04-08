@@ -6,9 +6,12 @@ services:
     build:
       context: .
       dockerfile: febedb.backend/Dockerfile
+     
 
   febedb.frontend:
     image: ${DOCKER_REGISTRY-}febedbfrontend
+    depends_on:
+      - febedb.backend
     build:
       context: .
       dockerfile: febedb.frontend/Dockerfile
