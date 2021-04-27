@@ -7,14 +7,26 @@ Febedb stands for Front End, Back End, DataBase.
 
 This repo is the chronicles of the transitioning of this classic [3tier app](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#traditional-n-layer-architecture-applications) app to one running in an orchestrated container, paving the way towards microservices like [eShopOnContainers](https://github.com/dotnet-architecture/eShopOnContainers) experience.
 
+## Why
+
+This repo exists for a few reasons, but mainly because I've found it challenging (so far) in transitioning from classic/old school development to modern containerized and orchestrated micro-services architecture in the Microsoft world.
+
+Reasons:
+
+1. Outline the process of containerizing an existing 3tier app
+1. The challenges of mixing docker, containers, Microsoft .net and Visual Studio (Kestrel)
+1. Docker for Windows: Linux containers vs Windows containers
+1. Self-signed Certificates for localhost in an orchestrated container world (requirements for gRPC)
+1. SQL Server, volumes, dacpac
+
+## Methodology
+
 In order to make this as relevant as possible for everyone, the [technologies](#technologies) and patterns used those that have traditionally used for this (Asp.Net MVC, Web services) and Sql Server.
 
 >[!NOTE]
 > This sample is tailored for Microsoft related development tools and frameworks, like Visual Studio, ASP.Net, SQL Server.
 
 The strategy here is a classic [lift and shift](https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/lift-shift-to-containers).  There won't be cooler/better frameworks or patterns used to build modern [frontend](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-client-side-web-technologies) like [Angular](https://angular.io/), [React]()]https://reactjs.org/) or [Vue.js]()]https://vuejs.org/), [backend]() using [Web API](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-application-layer-implementation-web-api) or [gRPC](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/grpc), nor any NoSql like [MongoDb](https://www.mongodb.com/).  On the other hand, at the end of the transition, your app will in position/state to make it easy to adopt them.
-
-## Methodology
 
 The chronicles are divided in milestones, or steps.  The src folder contains a sub folder for each step.  Each step has is documented in its own README.md.  
 
