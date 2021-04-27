@@ -1,27 +1,43 @@
 # Classic C# 3tier app to orchestrated container
 
-This repo is the chronicles of the transitioning of a classic [3tier app](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#traditional-n-layer-architecture-applications) app to one running in an orchestrated container, paving the way towards microservices like [eShopOnContainers](https://github.com/dotnet-architecture/eShopOnContainers) experience.
+You'll recognize this classic 3tier architecture:
+>![Classic 3tier](media/febedb/Slide2.PNG)
 
 Febedb stands for Front End, Back End, DataBase.
 
-In order to make this as relevant as possible to everyone, the [technologies](#technologies) and patterns used are classic (Asp.Net MVC, Web services) and Sql Server.  
+This repo is the chronicles of the transitioning of this classic [3tier app](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#traditional-n-layer-architecture-applications) app to one running in an orchestrated container, paving the way towards microservices like [eShopOnContainers](https://github.com/dotnet-architecture/eShopOnContainers) experience.
 
-There won't be cooler/better frameworks or patterns used to build modern [frontend](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-client-side-web-technologies) like [Angular](https://angular.io/), [React]()]https://reactjs.org/) or [Vue.js]()]https://vuejs.org/), [backend]() using [Web API](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-application-layer-implementation-web-api) or [gRPC](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/grpc), nor any NoSql like [MongoDb](https://www.mongodb.com/).
+In order to make this as relevant as possible for everyone, the [technologies](#technologies) and patterns used those that have traditionally used for this (Asp.Net MVC, Web services) and Sql Server.
 
-On the other hand, at the end of the transition, your app will in position/state to make it easy to adopt them.
+>[!NOTE]
+> This sample is tailored for Microsoft related development tools and frameworks, like Visual Studio, ASP.Net, SQL Server.
+
+The strategy here is a classic [lift and shift](https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/lift-shift-to-containers).  There won't be cooler/better frameworks or patterns used to build modern [frontend](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-client-side-web-technologies) like [Angular](https://angular.io/), [React]()]https://reactjs.org/) or [Vue.js]()]https://vuejs.org/), [backend]() using [Web API](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-application-layer-implementation-web-api) or [gRPC](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/grpc), nor any NoSql like [MongoDb](https://www.mongodb.com/).  On the other hand, at the end of the transition, your app will in position/state to make it easy to adopt them.
 
 ## Methodology
 
-Each step will have its own directory, with a "before" and an "after".
+The chronicles are divided in milestones, or steps.  The src folder contains a sub folder for each step.  Each step has is documented in its own README.md.  
 
-For each step, the app will be executable from Visual Studio or from the command line.
+>[!NOTE]
+> I tried to be as relevant to the developer's reality in having the executable from either Visual Studio or from the command line.
 
-Steps:
+## Steps
 
-1. story begins with a 3 tier app. [README](./src/step1.normal/README.md)
-1. app will be "dockerized". [README](./src/step2.normal/README.md)
-1. container orchestration with docker-compose. [README](./src/step3.dockercompose/README.md)
-1. Kubernetes
+The story begins with the 3 tier app.
+>![Original](media/febedb/Slide3.png)
+
+The [first step](./src/step1.normal/README.md) will be to change to static ports.
+>![step 1](media/febedb/Slide4.png)
+
+In [step 2](./src/step2.normal/README.md) we'll try to dockerize our app.
+>![step 2](media/febedb/Slide5.png)
+
+We'll hit a few road blocks, which will lead to our last step, with docker-compose. [Step 3 - Docker-Compose](./src/step3.dockercompose/README.md)
+>![step 3](media/febedb/Slide6.png)
+
+Our 3tier app can now run in a contained and orchestrated system, runnable from a developer's workstation or docker system.
+
+From there, the sky is the limit, for example Kubernetes, micro-services, modernized frameworks and tools, etc.
 
 ## Technologies
 
@@ -33,17 +49,8 @@ Starting technologies and software:
 - Frontend: Web App (MVC)
 - Backend: Web service
 - Database: Sql Server
-
-Target technologies and software:
-
-- Visual Studio 2019
-- .Net Core 5
 - Docker
 - Kubernetes
-- Language: C#
-- Frontend: Web App (MVC)
-- Backend: Web service
-- Database: Sql Server
 
 > [!Note]
 > .Net core 5 is probably more "modern" than your situation, simply [convert](https://github.com/dotnet/try-convert) your .net Framework app.
