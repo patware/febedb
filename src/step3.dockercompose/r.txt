@@ -1,0 +1,1 @@
+D:\dev\Github\Patware\febedb\src>"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\150\sqlpackage" /action:publish /sourcefile:.\step3.dockercompose\febedb.db.build\bin\Debug\netstandard2.1\febedb.db.build.dacpac /TargetDatabaseName:febedb.db /TargetServername:"(localdb)\ProjectsV13"

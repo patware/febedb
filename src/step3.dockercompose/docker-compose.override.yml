@@ -1,6 +1,14 @@
 version: '3.4'
 
 services:
+  febedb.db:
+   environment:
+    - ACCEPT_EULA=Y
+    - MSSQL_SA_PASSWORD=MyPassword
+    - MSSQL_PID=Express
+   ports:
+    - "1433:1433"
+
   febedb.backend:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -11,6 +19,7 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  
   febedb.frontend:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

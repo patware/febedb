@@ -105,3 +105,52 @@ The frontend still points to "localhost:5213", this is a two step fix:
 Now, if you hit Start, we're almost there ;)  There will be an error, that's because (localdb) being SQL Express won't be accessible.
 
 We can workaround that problem by hard coding a fake weather, and tackle the sql stuff another time.
+
+## The Db's turn for some TLC
+
+Lets try our luck with:
+
+- [Shawty](https://shawtyds.wordpress.com/2020/08/26/using-a-full-framework-sql-server-project-in-a-net-core-project-build/)'s blog.
+- [](https://www.wintellect.com/devops-sql-server-dacpac-docker)
+- [](https://www.wintellect.com/automating-sql-server-2019-docker-deployments/)
+- [](https://dbafromthecold.com/2019/09/18/running-sql-server-containers-as-non-root/)
+- [](https://docs.microsoft.com/en-us/sql/tools/sqlpackage/sqlpackage-download?view=sql-server-linux-ver15)
+- [](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-docker-container-configure?view=sql-server-ver15&pivots=cs1-bash)
+
+- Add new standard Class Library
+  - name: febedb.db.build
+  - Target Framework: .NET Standard 2.1
+- Delete class1
+- Unload the project
+- Replace the csproj with:
+
+```xml
+<Project Sdk="MSBuild.Sdk.SqlProj/1.11.4">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <SqlServerVersion>Sql130</SqlServerVersion>
+    <!-- For additional properties that can be set here, please refer to https://github.com/rr-wfm/MSBuild.Sdk.SqlProj#model-properties -->
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Refer to https://github.com/rr-wfm/MSBuild.Sdk.SqlProj#publishing-support for supported publishing options -->
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\febedb.db\**\*.sql" Exclude="..\febedb.db\bin\**" />
+  </ItemGroup>
+</Project>
+```
+
+Notice that there's a few differences from the blog.  I actually found out by running:
+
+```dos
+dotnet 
+dotnet new sqlproj
+```
+
+and checked out the generated project
+
+```dos
+docker build -f febedb.db.build\Dockerfile --build-arg PASSWORD=YourS3cureP@ass  -t febedbdb:dev .
+docker run -p 1433:1433 --name febedbdb -d febedbdb:dev
+
+```

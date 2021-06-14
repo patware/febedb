@@ -1,8 +1,16 @@
 version: '3.4'
 
 services:
+  febedb.db:
+    image: ${DOCKER_REGISTRY-}febedbdb
+    build:
+      context: .
+      dockerfile: febedb.db.build/Dockerfile
+
   febedb.backend:
     image: ${DOCKER_REGISTRY-}febedbbackend
+    depends_on:
+      - febedb.db
     build:
       context: .
       dockerfile: febedb.backend/Dockerfile
