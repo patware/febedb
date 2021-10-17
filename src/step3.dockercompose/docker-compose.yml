@@ -1,5 +1,7 @@
 version: '3.4'
 
+  
+
 services:
   febedb.db:
     image: ${DOCKER_REGISTRY-}febedbdb
@@ -18,9 +20,13 @@ services:
 
   febedb.frontend:
     image: ${DOCKER_REGISTRY-}febedbfrontend
+    volumes:
+      - dpk:/root/.aspnet/DataProtection-Keys
     depends_on:
       - febedb.backend
     build:
       context: .
       dockerfile: febedb.frontend/Dockerfile
 
+volumes:
+  dpk:
