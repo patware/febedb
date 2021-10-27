@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+
+  febedb.db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
+
+  febedb.backend:
+    image: ${DOCKER_REGISTRY-}febedbbackend
+    depends_on:
+      - febedb.db
+    build:
+      context: .
+      dockerfile: febedb.backend/Dockerfile
+
+  febedb.frontend:
+    image: ${DOCKER_REGISTRY-}febedbfrontend
+    depends_on:
+      - febedb.backend
+    build:
+      context: .
+      dockerfile: febedb.frontend/Dockerfile
