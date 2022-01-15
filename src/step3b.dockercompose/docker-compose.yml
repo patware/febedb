@@ -11,7 +11,7 @@ services:
       - "5434:1433"
 
   febedb.backend:
-    image: ${DOCKER_REGISTRY-}febedbbackend
+    image: ${DOCKER_REGISTRY-}febedbbackend:latest
     depends_on:
       - febedb.db
     build:
@@ -19,7 +19,7 @@ services:
       dockerfile: febedb.backend/Dockerfile
 
   febedb.frontend:
-    image: ${DOCKER_REGISTRY-}febedbfrontend
+    image: ${DOCKER_REGISTRY-}febedbfrontend:latest
     depends_on:
       - febedb.backend
     build:

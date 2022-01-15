@@ -5,10 +5,16 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+FROM base AS testCerts
+ADD Certs/Generated/febedb.ca.cert.crt /usr/local/share/ca-certificates/febedb.ca.cert.crt
+RUN chmod 644 /usr/local/share/ca-certificates/febedb.ca.cert.crt && update-ca-certificates
+
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["febedb.frontend/febedb.frontend.csproj", "febedb.frontend/"]
 COPY ["febedb.backend/febedb.backend.csproj", "febedb.backend/"]
+COPY ["febedb.frontend/febedb.frontend.csproj", "febedb.frontend/"]
+COPY ["febedb.db/febedb.db.sqlproj", "febedb.db/"]
+COPY ["febedb.db.build/febedb.db.build.csproj", "febedb.db.build/"]
 RUN dotnet restore "febedb.frontend/febedb.frontend.csproj"
 COPY . .
 WORKDIR "/src/febedb.frontend"

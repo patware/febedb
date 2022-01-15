@@ -1,0 +1,25 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "serviceActions": {
+        "febedb.backend": "StartWithoutDebugging",
+        "febedb.db": "StartWithoutDebugging",
+        "febedb.frontend": "StartWithoutDebugging"
+      },
+      "commandVersion": "1.0"
+    },
+    "DockerCompose Frontend": {
+      "commandName": "DockerCompose",
+      "composeLaunchServiceName": "febedb.frontend",
+      "serviceActions": {
+        "febedb.backend": "StartDebugging",
+        "febedb.db": "StartWithoutDebugging",
+        "febedb.frontend": "StartDebugging"
+      },
+      "composeLaunchAction": "LaunchBrowser",
+      "commandVersion": "1.0",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}"
+    }
+  }
+}
