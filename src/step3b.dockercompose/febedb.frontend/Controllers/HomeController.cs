@@ -2,6 +2,7 @@
 using febedb.frontend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,18 +15,21 @@ namespace febedb.frontend.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IWeatherService _weatherService;
+        private Settings _settings { get; }
 
-        public HomeController(ILogger<HomeController> logger, Services.IWeatherService weatherService)
+        public HomeController(ILogger<HomeController> logger, Services.IWeatherService weatherService, IOptions<Settings> settings)
         {
             _logger = logger;
             this._weatherService = weatherService;
+            _settings = settings.Value;
         }
 
         public async Task<IActionResult> Index()
         {
             var viewModel = new Models.HomeIndexViewModel
             {
-                CurrentWeather = await _weatherService.GetWeatherAsync()
+                CurrentWeather = await _weatherService.GetWeatherAsync(),
+                BackEndUrl = _settings.BackendUrl
             };
 
             return View(viewModel);
