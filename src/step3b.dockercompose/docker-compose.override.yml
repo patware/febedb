@@ -11,7 +11,6 @@ services:
       - 5313:443
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
   febedb.frontend:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -22,4 +21,3 @@ services:
       - 5323:443
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

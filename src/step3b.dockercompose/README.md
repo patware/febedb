@@ -261,3 +261,91 @@ The target process exited without raising a CoreCLR started event. Ensure that t
 OK   
 ---------------------------
 ```
+
+## Visual Studio 2022 Update
+
+I paused working on this for a few months, and had the brilliant idea to upgrade Visual Studio from 2019 to 2022.  Some projects have been updated to a newer .net version, and now the solution doesn't compile.
+
+```csharp
+error DT1001: failed to solve: rpc error: code = Unknown desc = failed to compute cache key: "/febedb.db.build/febedb.db.build.csproj" not found: not found
+```
+
+>[!TIP]
+> When refactoring code like what we're doing, do pause for a few months in the middle of it, finish the step first.
+
+Now, to fix the error, need to check why it's failing.  The /febedb.db.build/febedb.db.build.csproj is the workaround to allow "dotnet" to compile the bebedb.db database project, but it's not in the solution.  But it's referenced in the DockerFiles...
+
+- Open step3b.dockercompose\febedb.backend\Dockerfile
+- Remove the line 17: COPY ["febedb.db.build/febedb.db.build.csproj", "febedb.db.build/"]
+- Open step3b.dockercompose\febedb.frontend\Dockerfile
+- Remove the line 17: COPY ["febedb.db.build/febedb.db.build.csproj", "febedb.db.build/"]
+- Rebuild the solution - PASS
+
+The two projects compile in their docker images.  Appart from the CS0162 Unreachable code detected, we're in good shape.
+
+Run the solution, the [web page](https://localhost:5323/) will be opened with the following content:
+
+```html
+<h1>Today's weather forecast</h1>
+<div>0 - The SSL connection could not be established, see inner exception.</div>
+```
+
+However, if you open the [https://localhost:5313/swagger/index.html](https://localhost:5313/swagger/index.html), you'll see the page responds.
+
+This is the front-end not communicating with the back-end because of an SSL (https) problem.
+
+## Problem DevCerts
+
+Microsoft came up with a nice solution to deal with development SSL certificates - "Development certificates".  Dotnet generates local certificates that are associated with "localhost", so when the browser opens an https://localhost url, the certificate validation between the browser and the server (the workstation) will work.  But in our scenario, the frontend is communicating with the backend with the url [https://febedb.backend](https://febedb.backend) - the certificate issued for "bebedb.backend" does not match "localhost" so the browser rejects it.
+
+There's no way (as of the writing of this repo) to add alternative names to the dev certs.  More info at [https://docs.microsoft.com/en-us/aspnet/core/security/docker-https?view=aspnetcore-6.0](https://docs.microsoft.com/en-us/aspnet/core/security/docker-https?view=aspnetcore-6.0).
+
+We could disable https for development.  But I prefer having the same code for both dev and prod, call me overly protective.
+
+There's a workaround for Kubernetes to [Manage TLS Certificates in a Cluster](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/), which will be for step4, we need a solution for Docker-Compose.
+
+### OpenSSL
+
+After many failed attempts to find a solution, I found what I was looking for and it involves generating certificates using [OpenSSL](https://openssl.org).
+
+The big picture.  We use openssl to generate certificates, copy them to the backend and frontend docker images at build time, register them in the images *and* on your computer.
+
+OpenSSL can be difficult to install locally, but as a saving grace, many docker images have it installed already, so we'll use these docker images to generate them!
+
+The ./Certs/Init-Certs.ps1 script does these actions:
+
+- Generates a dynamic password and saves it to ./Certs/generated/Password.txt
+- Runs the GenerateCertsInContainer.ps1 in a dotnet sdk docker image (mcr.microsoft.com/dotnet/sdk:5.0).  The ./Certs folder is volume mounted to the /Certs so that the generated files are easily retrievable from the host
+- A Visual Studio docker-compose debug and release yml are generated with the password and certificate paths as environment variables (see bellow)
+- The generated certificate is registered on the local machine (so that the browser can validate the certificate being passed by the web app)
+
+The ./Certs/GenerateCertsInContainer.ps1 does these actions (in the container):
+
+- Using the ./Certs/*.cnf as configuration data + ./Certs/generated/Password.txt
+- Generates a certificate authority (root Certificate)
+- Generates a backend certificate
+- Generates a frontend certificate
+
+The generated docker-compose.vs.debug/release.yml contain the password and absolute path as environment variables that kestrel will use
+
+What do you need to do ?
+
+- Create a folder ./Certs
+- Copy every file from this repo's ./Certs folder
+- Modify the *.cnf to match your setup
+- Run ./Certs/Init-Certs.ps1
+- Add the generated docker-compose.vs.debug/release.yml to the docker-compose.dcproj
+- Modify the Dockerfiles
+
+The end of the Dockerfile should look like this:
+
+```dockerfile
+FROM base AS final
+WORKDIR /app
+COPY /Certs/generated/ /usr/local/share/ca-certificates
+RUN chmod 644 /usr/local/share/ca-certificates/febedb.ca.cert.crt \
+  && update-ca-certificates
+COPY --from=publish /app/publish .
+```
+
+That's it.  F5
