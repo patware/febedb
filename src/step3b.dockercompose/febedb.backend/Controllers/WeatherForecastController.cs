@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using febedb.backend.Models;
 using febedb.backend.Services;
+using Microsoft.Extensions.Logging;
 
 namespace febedb.backend.Controllers
 {
@@ -17,25 +18,29 @@ namespace febedb.backend.Controllers
         private readonly WeatherContext _context;
         private readonly ITemperatureAppreciation _temperatureAppreciation;
 
-        public WeatherForecastController(WeatherContext context, Services.ITemperatureAppreciation temperatureAppreciation)
+        public ILogger<WeatherForecastController> Logger { get; }
+
+        public WeatherForecastController(WeatherContext context, Services.ITemperatureAppreciation temperatureAppreciation, ILogger<WeatherForecastController> logger)
         {
             _context = context;
             _temperatureAppreciation = temperatureAppreciation;
+            Logger = logger;
         }
 
         // GET: api/WeatherForecast
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherForecast>>> GetWeatherForecast()
         {
-            await Task.CompletedTask;
+            //await Task.CompletedTask;
 
-            return new List<WeatherForecast>(new[] { new WeatherForecast() { 
-               Id = 123,
-               Date = DateTime.Now,
-               TemperatureC = 23,
-               Summary = "Fake temperature"
-            } });
+            //return new List<WeatherForecast>(new[] { new WeatherForecast() { 
+            //   Id = 123,
+            //   Date = DateTime.Now,
+            //   TemperatureC = 23,
+            //   Summary = "Fake temperature"
+            //} });
 
+            Logger.LogInformation("Fetching Weather from [{GetConnectionString}]", _context.Database.GetConnectionString());
 
             var l = await _context.WeatherForecast.ToListAsync();
 
