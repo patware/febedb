@@ -21,3 +21,6 @@ services:
       - 5323:443
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+  febedb.db.init:
+    volumes:
+      - .\febedb.db\bin\Debug:/dacpacs

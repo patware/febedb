@@ -5,10 +5,17 @@ services:
   febedb.db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-      - SA_PASSWORD=Pass@word
-      - ACCEPT_EULA=Y
+      SA_PASSWORD: Pass@w0rd
+      ACCEPT_EULA: Y
+      #MSSQL_PID: Express
     ports:
       - "5434:1433"
+#    volumes: 
+#      - febedbDbData:/var/opt/mssql/data
+#      - febedbDbLog:/var/opt/mssql/log
+#      - febedbDbSecrets:/var/opt/mssql/secrets
+    networks:
+      - febedb
 
   febedb.backend:
     image: ${DOCKER_REGISTRY-}febedbbackend:latest
@@ -17,6 +24,10 @@ services:
     build:
       context: .
       dockerfile: febedb.backend/Dockerfile
+    environment:
+      ConnectionStrings__febedbbackendContext: Server=febedb.db;Database=febedb;User Id=FebedbBackend;Password=Febedb@B4ckend;MultipleActiveResultSets=true;
+    networks:
+      - febedb
 
   febedb.frontend:
     image: ${DOCKER_REGISTRY-}febedbfrontend:latest
@@ -25,3 +36,26 @@ services:
     build:
       context: .
       dockerfile: febedb.frontend/Dockerfile
+    networks:
+      - febedb
+  
+  febedb.db.init:
+    image: ${DOCKER_REGISTRY-}febedbdbinit:latest
+    build:
+      context: .
+      dockerfile: febedb.db.init/Dockerfile
+    environment:
+      SA_PASSWORD: Pass@w0rd
+      ACCEPT_EULA: Y
+    networks:
+      - febedb      
+
+networks:
+  febedb:
+
+volumes:
+  febedbDbData:
+  febedbDbLog:
+  febedbDbSecrets:
+
+    
