@@ -36,16 +36,16 @@ The chronicles are divided in milestones, or steps.  The src folder contains a s
 ## Steps
 
 The story begins with the 3 tier app.
->![Original](media/febedb/Slide3.png)
+>![Original](media/febedb/Slide3.PNG)
 
 The [first step](./src/step1.normal/README.md) will be to change to static ports.
->![step 1](media/febedb/Slide4.png)
+>![step 1](media/febedb/Slide4.PNG)
 
 In [step 2](./src/step2.normal/README.md) we'll try to dockerize our app.
->![step 2](media/febedb/Slide5.png)
+>![step 2](media/febedb/Slide5.PNG)
 
 We'll hit a few road blocks, which will lead to our last step, with docker-compose. [Step 3 - Docker-Compose](./src/step3b.dockercompose/README.md)
->![step 3](media/febedb/Slide6.png)
+>![step 3](media/febedb/Slide6.PNG)
 
 Our 3tier app can now run in a contained and orchestrated system, runnable from a developer's workstation or docker system.
 
