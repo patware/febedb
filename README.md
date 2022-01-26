@@ -64,8 +64,7 @@ Starting technologies and software:
 - Docker
 - Kubernetes
 
-> [!Note]
-> .Net core 5 is probably more "modern" than your situation, simply [convert](https://github.com/dotnet/try-convert) your .net Framework app.
+> **_Note:_** .Net core 5 is probably more "modern" than your situation, simply [convert](https://github.com/dotnet/try-convert) your .net Framework app.
 
 ## Requirements
 
@@ -75,14 +74,27 @@ Starting technologies and software:
 - Visual Studio 2019
 - .Net Core 5.0
 
+> **_Note:_** The requirements above are for reference, at the time of this writing.
+
+> **_Note 2:_** By the time I was done, VS got updated to 2022 and .net to 6.0.  You'll see this in step 3.
+
 ## Naming convention for ports
 
-It's easier to troubleshoot errors when ports follow a certain pattern.  The web ports will be using the 5xxx range:
+It's easier to troubleshoot errors when ports follow a certain pattern.  The web ports will be using the 5### range:
 
-1. First digit: 5 - for convenience.
+1. First digit: 5 - for convenience (like 5000)
 1. Second digit: step-ish: 0: IIS Express, 1: kestrel, 2: docker, 3: docker-compose, 4: Kubernetes
-1. Third digit: 1 = back end, 2 = front end (follows the loading order)
+1. Third digit: 1 = back end, 2 = front end (follows the loading order, ish)
 1. Fourth digit 0 = http, 3 = https (like in 0 for 80 and 3 for 443 ;))
+
+| Step | Backend http | Bakend https | FrontEnd http | FrontEnd https | Sql  |
+|------|--------------|--------------|---------------|---------------|---------------|
+| 0    | 5010         | 5013         | 5020          | 5023           | 5043 |
+| 1    | 5110         | 5113         | 5120          | 5123           | 5143 |
+| 2    | 5210         | 5213         | 5220          | 5223           | 5243 |
+| 3    | 5310         | 5313         | 5320          | 5323           | 5343 |
+
+> __*Note:*__ This numbering by step is probably just _too much_, I had an idea at the beginning and by the time I realized I wasn't leveraging it, it was a bit late.  You can stick to whatever, obviously.
 
 ## 3 tier applications
 
@@ -97,3 +109,7 @@ Today, a more modern way of building these is via [microcontainers](https://docs
 ## This is not
 
 This repo is not a course or lecture on micro containers, containers, serverless, or any cloud native technology offerings.
+
+## Feedback
+
+If you find this tutorial-ish practical let me know.  If you find errors or there are instructions that aren't clear, let me know, or fix them and send me a pull request.  If you have better ways to do things, share your knowledge.
