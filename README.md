@@ -23,15 +23,13 @@ Reasons:
 
 In order to make this as relevant as possible for everyone, the [technologies](#technologies) and patterns used those that have traditionally used for this (Asp.Net MVC, Web services) and Sql Server.
 
->[!NOTE]
-> This sample is tailored for Microsoft related development tools and frameworks, like Visual Studio, ASP.Net, SQL Server.
+> **_Note:_** This sample is tailored for Microsoft related development tools and frameworks, like Visual Studio, ASP.Net, SQL Server.
 
 The strategy here is a classic [lift and shift](https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/lift-shift-to-containers).  There won't be cooler/better frameworks or patterns used to build modern [frontend](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-client-side-web-technologies) like [Angular](https://angular.io/), [React]()]https://reactjs.org/) or [Vue.js]()]https://vuejs.org/), [backend]() using [Web API](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-application-layer-implementation-web-api) or [gRPC](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/grpc), nor any NoSql like [MongoDb](https://www.mongodb.com/).  On the other hand, at the end of the transition, your app will in position/state to make it easy to adopt them.
 
 The chronicles are divided in milestones, or steps.  The src folder contains a sub folder for each step.  Each step has is documented in its own README.md.  
 
->[!NOTE]
-> I tried to be as relevant to the developer's reality in having the executable from either Visual Studio or from the command line.
+> **_Note:_** I tried to be as relevant to the developer's reality in having the executable from either Visual Studio or from the command line.
 
 ## Steps
 
@@ -109,6 +107,12 @@ Today, a more modern way of building these is via [microcontainers](https://docs
 ## This is not
 
 This repo is not a course or lecture on micro containers, containers, serverless, or any cloud native technology offerings.
+
+## Key takeaways
+
+If you want to use https from container to container in a multi-container environment on your workstation, the built-in dotnet devcert won't work.  I opted for OpenSSL.
+
+If you want to deploy a DACPAC to a Sql Server part of your multi-container environment, it's better to have it in a separate process/container.
 
 ## Feedback
 
