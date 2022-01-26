@@ -7,6 +7,16 @@ In [step 2](../step2.docker/README.md), we dockerized our 3 tier app, so instead
 The problem we quickly found out is that inter container communication is not easy.  
 In step 3, docker-compose will(I hope, well that's the plan) bridge the gap of inter container communication.
 
+Since we're on the subject, now that we're in step 3, don't forget the ports have changed also:
+
+- Database: 5343
+- Backend: 5310 (http) and 5313 (https)
+- Frontend: 5320 (http) and 5323 (https)
+
+## Step 3 vs 3b
+
+As you noticed, step 3 is actually called step 3b.  The initial step3 approach was wrong, it's well documented that database schemas shouldn't be saved/persisted to docker images.  In step3, I was trying hard to make the SqlProject compile and published to a docker image.
+
 ## docker-composing
 
 Our story picks up at the end of step2.docker.  I copied step2.docker to step3b.dockercompose
@@ -69,7 +79,7 @@ Add a new "services" item:
   febedb.db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-      - SA_PASSWORD=Pass@word
+      - SA_PASSWORD=Pass@w0rd
       - ACCEPT_EULA=Y
     ports:
       - "5434:1433"
@@ -87,7 +97,7 @@ services:
   febedb.db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-      - SA_PASSWORD=Pass@word
+      - SA_PASSWORD=Pass@w0rd
       - ACCEPT_EULA=Y
     ports:
       - "1433:1433"
@@ -270,8 +280,7 @@ I paused working on this for a few months, and had the brilliant idea to upgrade
 error DT1001: failed to solve: rpc error: code = Unknown desc = failed to compute cache key: "/febedb.db.build/febedb.db.build.csproj" not found: not found
 ```
 
->[!TIP]
-> When refactoring code like what we're doing, do pause for a few months in the middle of it, finish the step first.
+> **_TIP:_** When refactoring code like what we're doing, do pause for a few months in the middle of it, finish the step first.
 
 Now, to fix the error, need to check why it's failing.  The /febedb.db.build/febedb.db.build.csproj is the workaround to allow "dotnet" to compile the bebedb.db database project, but it's not in the solution.  But it's referenced in the DockerFiles...
 
@@ -281,7 +290,36 @@ Now, to fix the error, need to check why it's failing.  The /febedb.db.build/feb
 - Remove the line 17: COPY ["febedb.db.build/febedb.db.build.csproj", "febedb.db.build/"]
 - Rebuild the solution - PASS
 
-The two projects compile in their docker images.  Appart from the CS0162 Unreachable code detected, we're in good shape.
+The two projects compile in their docker images.  Apart from the CS0162 Unreachable code detected, we're in good shape.
+
+Take this opportunity (VS2022) to update the .net version to 6.0:
+
+- Upgrade frontend+backend to .net 6: csproj and Dockerfile base image
+
+csproj:
+
+```xml
+  ...
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  ...
+```
+
+Dockerfile:
+
+```dockerfile
+#...
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["febedb.backend/febedb.backend.csproj", "febedb.backend/"]
+#...
+```
 
 Run the solution, the [web page](https://localhost:5323/) will be opened with the following content:
 
@@ -294,7 +332,20 @@ However, if you open the [https://localhost:5313/swagger/index.html](https://loc
 
 This is the front-end not communicating with the back-end because of an SSL (https) problem.
 
-## Problem DevCerts
+## Troubleshooting/debugging changes
+
+To help in the troubleshooting/debugging, I've made a few tweaks to the front end and back end:
+
+- Frontend
+  - Added logging with ILogger
+  - Display'd BackendUrl in the home index
+  - Return to the home index the exception from calling the backend
+- Backend
+  - Added logging with ILogger
+
+## OpenSSL
+
+### Problem with DevCerts
 
 Microsoft came up with a nice solution to deal with development SSL certificates - "Development certificates".  Dotnet generates local certificates that are associated with "localhost", so when the browser opens an https://localhost url, the certificate validation between the browser and the server (the workstation) will work.  But in our scenario, the frontend is communicating with the backend with the url [https://febedb.backend](https://febedb.backend) - the certificate issued for "bebedb.backend" does not match "localhost" so the browser rejects it.
 
@@ -304,7 +355,7 @@ We could disable https for development.  But I prefer having the same code for b
 
 There's a workaround for Kubernetes to [Manage TLS Certificates in a Cluster](https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/), which will be for step4, we need a solution for Docker-Compose.
 
-### OpenSSL
+### OpenSSL to the rescue
 
 After many failed attempts to find a solution, I found what I was looking for and it involves generating certificates using [OpenSSL](https://openssl.org).
 
@@ -349,3 +400,59 @@ COPY --from=publish /app/publish .
 ```
 
 That's it.  F5
+
+Success.
+
+## Final step - the database
+
+There's lot of discussions/conversations around SQL Servers and databases, should they be in docker or not.  For development and ease of deployment it's quite practical.  Since this is a "let's do it in containers", let's do it.
+
+Here's what we do:
+
+Let's start with the easy stuff, Backend:
+
+WeatherForecastController.cs: comment out the return of dummy data, so the app does call the database.
+
+Startup.cs: Change the DbContext initializer to use the connection string from configuration 
+
+```c# 
+services.AddDbContext<Models.WeatherContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("febedbbackendContext")));
+```
+
+Now, DacPac deployment in a Docker container.  SqlPackage is not included in many "official" docker images.  I know it's included with the SqlServer images, but I feel "dirty" using such a big image just for the SqlPackage, even though the life span of the container is only to "deploy the dacpac" and die.  I choose mcr.microsoft.com/powershell as the base image, but will simply install the necessary components.
+
+Check this repo for the folder febedb.db.init, it contains all you need.
+
+- Dockerfile: The container that runs the init.ps1
+- init.ps1: script that waits for sql to be ready, deploys the dacpac and seeds the data.
+- seed.sql: the T-SQL data seed
+
+The Dockerfile is quite standard, here are the things that stick out:
+
+- ```Dockerfile ENV ACCEPT_EULA=y``` and ```Dockerfile ENV DEBIAN_FRONTEND noninteractive``` prevents the apt-get to prompt to approve the MS license
+- gnupg and software-properties-common are needed for the MS packages
+- there's a mix of curl and wget, I know.  Cut and pastes from google examples
+- ```dockerfile ENTRYPOINT ["pwsh", "/init/init.ps1"]``` will stop the container when it's done.
+
+Finally, docker-compose, change yml to include the db init.
+
+```yml
+  febedb.db.init:
+    image: ${DOCKER_REGISTRY-}febedbdbinit:latest
+    build:
+      context: .
+      dockerfile: febedb.db.init/Dockerfile
+    environment:
+      SA_PASSWORD: Pass@w0rd
+      ACCEPT_EULA: Y
+    networks:
+      - febedb  
+
+networks:
+  febedb:
+
+```
+
+Notice that the db.init shares the same network.
+
+I believe this is it.  I have to admit, everything from the section Visual Studio 2022 to the end is from the top of my head and by looking at the git logs.  I probably missed some details.
