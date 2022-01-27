@@ -36,13 +36,13 @@ The chronicles are divided in milestones, or steps.  The src folder contains a s
 The story begins with the 3 tier app.
 >![Original](media/febedb/Slide3.PNG)
 
-The [first step](./src/step1.normal/README.md) will be to change to static ports.
+The first step [Step #1](./src/step1.normal/README.md) will be to change to static ports.
 >![step 1](media/febedb/Slide4.PNG)
 
-In [step 2](./src/step2.normal/README.md) we'll try to dockerize our app.
+In [Step #2 - Docker](./src/step2.docker/README.md) we'll try to dockerize our app.
 >![step 2](media/febedb/Slide5.PNG)
 
-We'll hit a few road blocks, which will lead to our last step, with docker-compose. [Step 3 - Docker-Compose](./src/step3b.dockercompose/README.md)
+We'll hit a few road blocks, which will lead to our last step, [Step #3 - Docker-Compose](./src/step3b.dockercompose/README.md)
 >![step 3](media/febedb/Slide6.PNG)
 
 Our 3tier app can now run in a contained and orchestrated system, runnable from a developer's workstation or docker system.
@@ -72,7 +72,7 @@ Starting technologies and software:
 - Visual Studio 2019
 - .Net Core 5.0
 
-> **_Note:_** The requirements above are for reference, at the time of this writing.
+> **_Note 1:_** The requirements above are for reference, at the time of this writing.
 
 > **_Note 2:_** By the time I was done, VS got updated to 2022 and .net to 6.0.  You'll see this in step 3.
 
@@ -85,12 +85,12 @@ It's easier to troubleshoot errors when ports follow a certain pattern.  The web
 1. Third digit: 1 = back end, 2 = front end (follows the loading order, ish)
 1. Fourth digit 0 = http, 3 = https (like in 0 for 80 and 3 for 443 ;))
 
-| Step | Backend http | Bakend https | FrontEnd http | FrontEnd https | Sql  |
-|------|--------------|--------------|---------------|---------------|---------------|
-| 0    | 5010         | 5013         | 5020          | 5023           | 5043 |
-| 1    | 5110         | 5113         | 5120          | 5123           | 5143 |
-| 2    | 5210         | 5213         | 5220          | 5223           | 5243 |
-| 3    | 5310         | 5313         | 5320          | 5323           | 5343 |
+| Step                                      | Backend http | Bakend https | FrontEnd http | FrontEnd https | Sql      |
+|-------------------------------------------|--------------|--------------|---------------|----------------|----------|
+| 0                                         | 5010         | 5013         | 5020          | 5023           | 5043     |
+| [1](./src/step1.normal/README.md)         | 5**1**10     | 5**1**13     | 5**1**20      | 5**1**23       | 5**1**43 |
+| [2](./src/step2.docker/README.md)         | 5**2**10     | 5**2**13     | 5**2**20      | 5**2**23       | 5**2**43 |
+| [3](./src/step3b.dockercompose/README.md) | 5**3**10     | 5**3**13     | 5**3**20      | 5**3**23       | 5**3**43 |
 
 > __*Note:*__ This numbering by step is probably just _too much_, I had an idea at the beginning and by the time I realized I wasn't leveraging it, it was a bit late.  You can stick to whatever, obviously.
 
