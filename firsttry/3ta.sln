@@ -1,26 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3ta.api", "3ta.api\3ta.api.csproj", "{0823A655-29EE-4D33-B77A-6C2844318779}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3ta.api", "3ta.api\3ta.api\3ta.api.csproj", "{0823A655-29EE-4D33-B77A-6C2844318779}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DAC903B9-06D5-4F40-A2D8-AA31FC44D8D2}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
 		.env = .env
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F5B371F0-2FFB-4FD6-A50C-5EF57EF0839E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backends", "Backends", "{CCECCB4F-4D99-4340-ACD5-4326BC0AAE02}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3ta.business", "3ta.business\3ta.business.csproj", "{11179919-81E0-48D5-8170-9D8209AF5AA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3ta.business", "3ta.business\3ta.business\3ta.business.csproj", "{11179919-81E0-48D5-8170-9D8209AF5AA3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnds", "FrontEnds", "{5FB3EB73-2699-48C3-89CA-A1E025E54FB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3ta.mvc", "3ta.mvc\3ta.mvc.csproj", "{CAB7B9EA-7DF5-4AD2-B7BE-BDF2BD50398E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3ta.mvc", "3ta.mvc\3ta.mvc\3ta.mvc.csproj", "{CAB7B9EA-7DF5-4AD2-B7BE-BDF2BD50398E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
