@@ -368,3 +368,4 @@ Generated/
 /src/step3b.dockercomposebackup/
 /src/step3.dockercompose/docker-compose.vs.debug.yml
 /src/step3.dockercompose/db
+**/wwwroot/lib/
