@@ -54,7 +54,7 @@ From there, the sky is the limit, for example Kubernetes, micro-services, modern
 Starting technologies and software:
 
 - Visual Studio 2019
-- .Net Core 5
+- .Net Core 6 (Updated to 6 on 2022.04.15)
 - Language: C#
 - Frontend: Web App (MVC)
 - Backend: Web service
@@ -62,7 +62,9 @@ Starting technologies and software:
 - Docker
 - Kubernetes
 
-> **_Note:_** .Net core 5 is probably more "modern" than your situation, simply [convert](https://github.com/dotnet/try-convert) your .net Framework app.
+> **_Note:_** .Net core 6 is probably more "modern" than your situation, simply [convert](https://github.com/dotnet/try-convert) your .net Framework app.
+
+> **_Note:_** Update: on 2022.04.15, updated all projects and Dockerfiles to .Net 6
 
 ## Requirements
 
@@ -70,7 +72,7 @@ Starting technologies and software:
 - Docker for Windows with Kubernetes - Windows Containers
 - WSL2
 - Visual Studio 2019
-- .Net Core 5.0
+- .Net Core 6 (Updated to 6 on 2022.04.15)
 
 > **_Note 1:_** The requirements above are for reference, at the time of this writing.
 
