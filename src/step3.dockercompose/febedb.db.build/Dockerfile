@@ -37,7 +37,7 @@
 
 
 # --------------------------------------------------------
-FROM mcr.microsoft.com/mssql/server:2019-latest AS base
+FROM mcr.microsoft.com/mssql/server:2019-latest@sha256:fb5277e7a3cc53f7d2230ed089ed60849f79567ebb0aae8f41ceb85879e9e09d AS base
 WORKDIR /init
 
 # Configure external build arguments to allow configurability.
@@ -52,7 +52,7 @@ ENV MSSQL_SA_PASSWORD="<YourStrong!Passw0rd>"
 
 # --------------------------------------------------------
 # This will build the febedb.db.build which will generate dacpac (to folder /db/)
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0@sha256:6f6ca28cee7960278a8a62859d389084a48449abaa0b98411b1e8684716585a5 as build
 WORKDIR /src
 COPY ["febedb.backend/febedb.backend.csproj", "febedb.backend/"]
 COPY ["febedb.frontend/febedb.frontend.csproj", "febedb.frontend/"]
