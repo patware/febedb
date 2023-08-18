@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>_3ta.mvc</RootNamespace>
     <UserSecretsId>c5b1c0e2-3446-489b-b4d8-51d9449b779f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -13,18 +13,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.19.4" />
-    <PackageReference Include="Grpc.Net.Client" Version="2.43.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.44.0">
+    <PackageReference Include="Google.Protobuf" Version="3.24.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.55.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.57.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.6.2">
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.1.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
-    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.161" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
   </ItemGroup>
 
   <ItemGroup>
