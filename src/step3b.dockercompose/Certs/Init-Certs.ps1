@@ -46,7 +46,7 @@ $a = @(
   "--rm",
   "--volume", "$(Get-Location):/Certs"
   "--workdir", "/Certs"
-  "mcr.microsoft.com/dotnet/sdk:5.0"
+  "mcr.microsoft.com/dotnet/sdk:7.0"
   "pwsh", "-File", "/Certs/GenerateCertsInContainer.ps1"
 )
 Write-Host "Create Generate Certs using Docker"
