@@ -5,7 +5,7 @@ services:
     build:
       target: testCerts
     environment:
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=bc3fc426daab489faa85ad479ab982ec
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=90bbb875118d4342bb83d35b9503d7c2
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/Certs/febedb.backend.pfx
     volumes:
       - ./Certs/Generated:/Certs
@@ -13,7 +13,7 @@ services:
     build:
       target: testCerts
     environment:
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=bc3fc426daab489faa85ad479ab982ec
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=90bbb875118d4342bb83d35b9503d7c2
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/Certs/febedb.frontend.pfx
     volumes:
       - ./Certs/Generated:/Certs

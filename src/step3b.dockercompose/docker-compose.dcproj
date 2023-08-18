@@ -7,7 +7,7 @@
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>febedb.frontend</DockerServiceName>
-    <DockerComposeProjectName>febedbComposed</DockerComposeProjectName>
+    <DockerComposeProjectName>febedbcomposed</DockerComposeProjectName>
     <DockerDevelopmentMode>Regular</DockerDevelopmentMode>
   </PropertyGroup>
   <ItemGroup>
